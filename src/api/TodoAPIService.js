@@ -8,3 +8,12 @@ export const apiClient = axios.create(
 
 export const retriveAllTodosForUsername
     = (username) => apiClient.get(`/users/${username}/todos`)
+
+export const retriveTodoById
+    = (username, id) => apiClient.get(`/users/${username}/todos/${id}`)
+
+export const createTodo
+    = (username, todo) => apiClient.post(`/users/${username}/todos`, todo)
+
+export const updateTodo
+    = (username, id, todo) => apiClient.put(`/users/${username}/todos/${id}`, todo)

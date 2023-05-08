@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react"
 import { retriveAllTodosForUsername } from "../api/TodoAPIService"
+import { useNavigate } from "react-router-dom"
 
 export default function ListTodosComponent(){
 
     const [todos, setTodos] = useState([])
+
+    const navigate = useNavigate()
 
     useEffect (
         () => refreshTodos()
@@ -13,6 +16,14 @@ export default function ListTodosComponent(){
         retriveAllTodosForUsername('mat')
         .then(response => setTodos(response.data))
         .catch(error => console.log(error))
+    }
+
+    function addnewTodo(){
+        navigate(`/todo/-1`)
+    }
+
+    function updateTodo(id){
+        navigate(`/todo/${id}`)
     }
 
     return(
@@ -36,7 +47,9 @@ export default function ListTodosComponent(){
                                     <td>{todo.description}</td>
                                     <td>{todo.done.toString()}</td>
                                     <td>{todo.targetDate.toString()}</td>
-                                    <td><button className="btn btn-warning">Update</button></td>
+                                    <td><button className="btn btn-warning" 
+                                                onClick={ () => updateTodo(todo.id)}
+                                    > Update</button></td>
                                     <td><button className="btn btn-danger">Delete</button></td>
                                 </tr>
                             )
@@ -45,7 +58,7 @@ export default function ListTodosComponent(){
 
                     </tbody>
                 </table>
-                <div className="btn btn-success m-5" >ADD NEW</div>
+                <div className="btn btn-success m-5" onClick={addnewTodo} >ADD NEW</div>
             </div>
         </div>
     )

@@ -1,6 +1,7 @@
 
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from './security/AuthContext'
 
 export default function LoginCoomponent(){
 
@@ -12,6 +13,8 @@ export default function LoginCoomponent(){
 
     const naviate = useNavigate()
 
+    const authContext = useAuth()
+
     function handleUsernameChange(event){
         setUsername(event.target.value)
     }
@@ -20,9 +23,8 @@ export default function LoginCoomponent(){
         setPassword(event.target.value)
     }
 
-    function handelSubmit(event){
-        console.log(event)
-        if(username=='Mat' && password=='password'){
+    function handelSubmit(){
+        if(authContext.login(username, password)){
             console.log('logged')
             naviate(`/welcome/${username}`)
         } else {

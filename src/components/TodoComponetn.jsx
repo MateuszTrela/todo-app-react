@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom"
 import { retriveTodoById, createTodo, updateTodo } from "../api/TodoAPIService"
 import { useEffect, useState } from "react"
-import { Formik, Form, Field } from "formik"
+import { Formik, Form, Field, ErrorMessage } from "formik"
 import { useNavigate } from "react-router-dom"
 
 export default function TodoComponent(){
@@ -58,6 +58,19 @@ export default function TodoComponent(){
         }
     }
 
+    function validateInput(values){
+        let errors = { }
+        if(values.description.length<1){
+            errors.description = 'Enter at least 1 characters'
+        }
+
+        if(values.targetDate == null || values.targetDate=='' || values.targetDate.length != 10){
+            errors.targetDate = "Enter a valid date"
+        }
+
+        return errors
+    }
+
     return (
         <div className="container"> 
             <h1>Enter Your Todo</h1>
@@ -65,10 +78,21 @@ export default function TodoComponent(){
                 <Formik initialValues={ {description, targetDate} }
                     enableReinitialize="true"
                     onSubmit={addTodo}
+                    validate = {validateInput}
                 >
                     {
                         (props) => (
                             <Form>
+                                <ErrorMessage
+                                name="description"
+                                component="div"
+                                className="alert alert-warning"
+                                />
+                                <ErrorMessage
+                                name="targetDate"
+                                component="div"
+                                className="alert alert-warning"
+                                />
                                 <fieldset className="form-group">
                                     <label>Description</label>
                                     <Field type="text" className="form-control" name="description" />

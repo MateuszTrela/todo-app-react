@@ -17,3 +17,6 @@ export const createTodo
 
 export const updateTodo
     = (username, id, todo) => apiClient.put(`/users/${username}/todos/${id}`, todo)
+
+export const deleteTodoAPI
+    =(username, id) => apiClient.delete(`/users/${username}/todos/${id}`)

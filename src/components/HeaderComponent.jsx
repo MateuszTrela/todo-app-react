@@ -19,7 +19,7 @@ export default function HeaderComponent(){
                     <div className="collapse navbar-collapse">
                         <ul className="navbar-nav">
                             <li className="nav-item fs-5">
-                                {isAuthenticated && <Link className="nav-link" to="/welcome">Home</Link>}
+                                {isAuthenticated && <Link className="nav-link" to={`/welcome/${authContext.username}`}>Home</Link>}
                             </li>
                             <li className="nav-item fs-5">
                                 {isAuthenticated && <Link className="nav-link" to="/todos">MyTodos</Link>}

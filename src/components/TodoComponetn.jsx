@@ -3,8 +3,11 @@ import { retriveTodoById, createTodo, updateTodo } from "../api/TodoAPIService"
 import { useEffect, useState } from "react"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "./security/AuthContext"
 
 export default function TodoComponent(){
+
+    const authContext = useAuth()
 
     const {id} = useParams()
 
@@ -12,17 +15,17 @@ export default function TodoComponent(){
 
     const[description, setDescription] = useState('')
     const[targetDate, setTargetDate] = useState('')
-    
+
     useEffect(
         () =>{
-            if(id != -1){
+            if(id !== 'new'){
                 retriveTodo()
             }
-        }, [id]
+        },// [id]
     )
 
     function retriveTodo(){
-        retriveTodoById('mat', id)
+        retriveTodoById(authContext.username, id)
         .then(response => {
             setDescription(response.data.description)
             setTargetDate(response.data.targetDate)
@@ -31,26 +34,25 @@ export default function TodoComponent(){
     }
 
     function addTodo(values){
-        console.log(values)
-        const username = 'Mat'
+
         const todo = {
-            id: id,
-            username: username,
+            //id: id,
+            username: authContext.username,
             description: values.description,
             targetDate: values.targetDate,
             done: false
         }
 
-        console.log(todo)
+        console.log("Created todo:", todo)
 
-        if(id==-1){
-            createTodo(username, todo)
+        if(id==='new'){
+            createTodo(authContext.username, todo)
             .then(response => {
                 navigate('/todos')
             })
             .catch(error => console.log(error))
         } else {
-            updateTodo(username, id, todo)
+            updateTodo(authContext.username, id, todo)
             .then(response => {
                 navigate('/todos')
             })
@@ -64,7 +66,7 @@ export default function TodoComponent(){
             errors.description = 'Enter at least 1 characters'
         }
 
-        if(values.targetDate == null || values.targetDate=='' || values.targetDate.length != 10){
+        if(values.targetDate == null || values.targetDate==='' || values.targetDate.length !== 10){
             errors.targetDate = "Enter a valid date"
         }
 

@@ -25,7 +25,6 @@ export default function LoginCoomponent(){
 
     function handelSubmit(){
         if(authContext.login(username, password)){
-            console.log('logged')
             naviate(`/welcome/${username}`)
         } else {
             setShowErrorMesage(true)
@@ -36,7 +35,7 @@ export default function LoginCoomponent(){
         <div className="Login">
             <h1>Please login</h1>
 
-            {showErrorMessage && <div class="alert alert-danger" role="alert"> Wrong Username or Password.</div>}
+            {showErrorMessage && <div className="alert alert-danger" role="alert"> Wrong Username or Password.</div>}
 
             <div className="LoginForm">
                 <div className="form-group col-xl-2 mx-auto">
